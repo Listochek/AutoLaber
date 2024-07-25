@@ -7,19 +7,6 @@ import shutil
 class BingImageCrawlerList:
     def __init__(self) -> None:
         pass
-    
-    def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, synonym: bool = False, main_folder_name: str = 'Crawler'):
-    
-        if os.path.isdir(Save_path):
-            shutil.rmtree(Save_path)
-
-        BingImageCrawlerList.add_folders(Save_path, key_words)
-        os.makedirs(f'{Save_path}\\{main_folder_name}')
-        for i in key_words:
-            bing_crawler = BingImageCrawler(storage={'root_dir': f'{Save_path}/{i}'})
-            bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
-        print(BingImageCrawlerList.get_all_filenames(Save_path))
-        BingImageCrawlerList.piture_rename(Save_path, main_folder_name, BingImageCrawlerList.get_all_filenames(Save_path))
 
     def add_folders( parent_dir: str, folders_names: list):
         for i in folders_names:
@@ -47,7 +34,18 @@ class BingImageCrawlerList:
         for i in folders_names:
             shutil.rmtree(f'{parent_dir}/{i}')
 
+def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, synonym: bool = False, main_folder_name: str = 'Crawler'):
+    
+    if os.path.isdir(Save_path):
+        shutil.rmtree(Save_path)
 
+    BingImageCrawlerList.add_folders(Save_path, key_words)
+    os.makedirs(f'{Save_path}\\{main_folder_name}')
+    for i in key_words:
+        bing_crawler = BingImageCrawler(storage={'root_dir': f'{Save_path}/{i}'})
+        bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
+    print(BingImageCrawlerList.get_all_filenames(Save_path))
+    BingImageCrawlerList.piture_rename(Save_path, main_folder_name, BingImageCrawlerList.get_all_filenames(Save_path))
 
 KEYS = ['котики', 'мышки', 'коты']
-BingImageCrawlerList.bing_list_crawler(KEYS, 'TESTS', 3)
+bing_list_crawler(KEYS, 'TESTS', 3)
