@@ -4,7 +4,7 @@ import shutil
 
 
 # можно было бы добавить номер откуда начинаются картинк
-class BingImageCrawlerList:
+class FolderManager:
     def __init__(self) -> None:
         pass
 
@@ -17,14 +17,12 @@ class BingImageCrawlerList:
         folders_names.remove(main_folder_name)
         print(folders_names)
         for i in folders_names:
-            pathik = f'{parent_dir}/{i}' #{main_folder_name}/
+            pathik = f'{parent_dir}/{i}' 
             print(os.listdir(pathik))
             list_iteration = os.listdir(pathik)
             for j in list_iteration:
-                #print(f'{parent_dir}/{i}/{j}')
-                #print(f'{parent_dir}/{main_folder_name}/{i + j}')
                 shutil.move(f'{parent_dir}/{i}/{j}', f'{parent_dir}/{main_folder_name}/{i + j}')
-        BingImageCrawlerList.remove_dirs(parent_dir, folders_names)
+        FolderManager.remove_dirs(parent_dir, folders_names)
 
     def get_all_filenames(dirr: str) -> list:
         dir_list = os.listdir(dirr)
@@ -34,18 +32,22 @@ class BingImageCrawlerList:
         for i in folders_names:
             shutil.rmtree(f'{parent_dir}/{i}')
 
-def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, synonym: bool = False, main_folder_name: str = 'Crawler'):
+    def remove_old_folder(parent_dir: str):
+        if os.path.isdir(parent_dir):
+            shutil.rmtree(parent_dir)
     
-    if os.path.isdir(Save_path):
-        shutil.rmtree(Save_path)
+class FolderSeparation:
+    pass
 
-    BingImageCrawlerList.add_folders(Save_path, key_words)
+
+def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, main_folder_name: str = 'Crawler', synonym: bool = False):
+    FolderManager.remove_old_folder(Save_path)
+    FolderManager.add_folders(Save_path, key_words)
     os.makedirs(f'{Save_path}\\{main_folder_name}')
     for i in key_words:
         bing_crawler = BingImageCrawler(storage={'root_dir': f'{Save_path}/{i}'})
         bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
-    print(BingImageCrawlerList.get_all_filenames(Save_path))
-    BingImageCrawlerList.piture_rename(Save_path, main_folder_name, BingImageCrawlerList.get_all_filenames(Save_path))
+    FolderManager.piture_rename(Save_path, main_folder_name, FolderManager.get_all_filenames(Save_path))
 
 KEYS = ['котики', 'мышки', 'коты']
 bing_list_crawler(KEYS, 'TESTS', 3)
