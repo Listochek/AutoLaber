@@ -21,7 +21,7 @@ def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, synonym
 
 def add_folders(parent_dir: str, folders_names: list):
     for i in folders_names:
-        path = os.path.join(parent_dir, i) # ДОБАВИТЬ TRY EXECPT
+        path = os.path.join(parent_dir, i)
         os.makedirs(path)
     
     print(folders_names)
