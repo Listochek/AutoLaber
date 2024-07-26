@@ -50,4 +50,4 @@ def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, main_fo
     FolderManager.piture_rename(Save_path, main_folder_name, FolderManager.get_all_filenames(Save_path))
 
 KEYS = ['котики', 'мышки', 'коты']
-bing_list_crawler(KEYS, 'TESTS', 3)
+bing_list_crawler(KEYS, 'TESTS', 65)
