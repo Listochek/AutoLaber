@@ -8,12 +8,12 @@ class FolderManager:
     def __init__(self) -> None:
         pass
 
-    def add_folders( parent_dir: str, folders_names: list):
+    def add_folders( parent_dir: str, folders_names: list) -> None:
         for i in folders_names:
             path = os.path.join(parent_dir, i)
             os.makedirs(path)
 
-    def piture_rename(parent_dir: str, main_folder_name: str, folders_names: list): 
+    def piture_rename(parent_dir: str, main_folder_name: str, folders_names: list) -> None: 
         folders_names.remove(main_folder_name)
         print(folders_names)
         for i in folders_names:
@@ -28,11 +28,11 @@ class FolderManager:
         dir_list = os.listdir(dirr)
         return dir_list
 
-    def remove_dirs(parent_dir: str, folders_names: list):
+    def remove_dirs(parent_dir: str, folders_names: list) -> None:
         for i in folders_names:
             shutil.rmtree(f'{parent_dir}/{i}')
 
-    def remove_old_folder(parent_dir: str):
+    def remove_old_folder(parent_dir: str) -> None:
         if os.path.isdir(parent_dir):
             shutil.rmtree(parent_dir)
     
@@ -48,6 +48,3 @@ def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, main_fo
         bing_crawler = BingImageCrawler(storage={'root_dir': f'{Save_path}/{i}'})
         bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
     FolderManager.piture_rename(Save_path, main_folder_name, FolderManager.get_all_filenames(Save_path))
-
-KEYS = ['котики', 'мышки', 'коты']
-bing_list_crawler(KEYS, 'TESTS', 65)
