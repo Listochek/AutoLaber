@@ -1,3 +1,7 @@
-.pyc
 Crawler/
 picture/
+.vscode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
