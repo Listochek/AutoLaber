@@ -3,15 +3,20 @@ import os
 import shutil
 import hashlib
 from collections import defaultdict
+import random
+
 
 class FolderManager:
     def __init__(self) -> None:
         pass
 
-    def add_folders(parent_dir: str, folders_names: list) -> None:
+    def add_folders(parent_dir: str, folders_names: list) -> list:
+        path_list = []
         for i in folders_names:
             path = os.path.join(parent_dir, i)
-            os.makedirs(path)
+            path_list.append(path)
+            os.makedirs(path, exist_ok=True)
+        return path_list
 
     def piture_rename(parent_dir: str, main_folder_name: str, folders_names: list) -> None: 
         folders_names.remove(main_folder_name)
@@ -38,35 +43,47 @@ class FolderManager:
 
 # в траейн 75% вал 20% в тест 5%
 class FolderSeparation:
+    '''add_folders -> *ranaming ->separation'''
     def __init__(self) -> None:
-        self.runer()
+        pass
 
-    def drop_duplicates():
-        pass
-    def separation(): # random = True/False
-        pass  
-    def add_folders(): 
-        pass
+    def shuffle_imgs(self, images_dir: str) -> list: # random = True/False
+        all_files = os.listdir(images_dir)
+        random.shuffle(all_files)
+        return all_files 
+
+    def separation_files(self, all_files: list, folder_sizes: list):
+        total_files = len(all_files)
+        train_end = int(total_files * folder_sizes[0] / 100)
+        validation_end = int(total_files * folder_sizes[2] / 100)
+
+        train_files = all_files[:train_end]
+        validation_files = all_files[train_end:validation_end]
+        test_files = all_files[validation_end:]
+        return [train_files, validation_files, test_files]
+    '''    
+    def move_files(files, target_dir):
+        for file in files:
+            shutil.move(os.path.join(images_dir, file), os.path.join(target_dir, file))'''
+
+    def add_folders(self, images_dir: str, folder_names: list) -> list:
+        for i in folder_names:
+            if os.path.isdir(f'{images_dir}\\{i}'):
+                shutil.rmtree(f'{images_dir}\\{i}')
+        #FolderManager.remove_dirs(parent_dir, folder_names)
+        return FolderManager.add_folders(images_dir, folder_names)
+
     def ranaming():
         pass
 
-    def runer(folder_sizes: list = [75, 20, 5], random: bool = False, renaming_picture: bool = False):
-        """
-            folder_sizes = [75, 20, 5] 
-
-            75% - pictures on train, 
-            20% - pictures on vallidation, 
-            5% - pictures on test
-        
-            random = False
-
-            True - random distribution of pictures
-            False - sequential image division
-        """
-        pass
+    def runer(self, parrent_dir:str, images_dir: str, folder_sizes: list = [75, 20, 5], folder_names: list = ['train', 'validation', 'test'], random_names:bool = False): #, random: bool = False, renaming_picture: bool = False
+        self.add_folders(parrent_dir, folder_names)
+        all_files = self.shuffle_imgs(images_dir)
+        al = self.separation_files(all_files, folder_sizes)
+        print(al)
+     
 
 class RemoveDuplicate():
-    
     def __init__(self) -> None:
         pass
     
@@ -87,12 +104,10 @@ class RemoveDuplicate():
         duplicates = {hash_value: paths for hash_value, paths in hash_dict.items() if len(paths) > 1}
         # условие на удаление по повторению delite_picture = True
         if delite_picture==False:
-            print(duplicates)
             return duplicates
             
         else:
             self.drop_dublicate(duplicates)
-            print(f'{duplicates} - БЫЛИ ДРОПНУТЫ')
             return duplicates
 
     def hash_image(self, file_path) -> str:
@@ -111,22 +126,10 @@ class RemoveDuplicate():
             for j in massik:
                 os.remove(j)   
 
-'''    def process_duplicates(self, ):
-        pass'''
-    
 
-'''
-def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, main_folder_name: str = 'Crawler', synonym: bool = False):
-    FolderManager.remove_old_folder(Save_path)
-    FolderManager.add_folders(Save_path, key_words)
-    os.makedirs(f'{Save_path}\\{main_folder_name}')
-    for i in key_words:
-        bing_crawler = BingImageCrawler(storage={'root_dir': f'{Save_path}/{i}'})
-        bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
-    FolderManager.piture_rename(Save_path, main_folder_name, FolderManager.get_all_filenames(Save_path))
-#FolderSeparation.runer()'''
 
 duplicate_remover = RemoveDuplicate()
-
+fold =  FolderSeparation()
+fold.runer('picture', 'picture\\Crawler', folder_names=['train', 'validation', 'test'])
 # Вызов метода find_duplicate_images через экземпляр класса
-duplicate_remover.find_duplicate_images(folder_path='picture\Crawler', delite_picture=True)
+#duplicate_remover.find_duplicate_images(folder_path='picture\Crawler', delite_picture=False)
