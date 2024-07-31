@@ -44,10 +44,9 @@ def process_images_in_directory(parrent_dir: str, folder_name: str = 'Crawler') 
 
 
 def find_duplicate_images(folder_path: str, delite_picture : bool = False):
-    # Словарь для хранения хешей изображений
+   # Словарь для хранения хешей изображений
    hash_dict = defaultdict(list)
-
-    # Перебираем файлы в папке
+   # Перебираем файлы в папке
    for root, dirs, files in os.walk(folder_path):
       for file in files:
             # Проверяем, является ли файл изображением (можно добавлять другие форматы)
@@ -59,17 +58,14 @@ def find_duplicate_images(folder_path: str, delite_picture : bool = False):
 
     # Возвращаем только повторяющиеся изображения
    duplicates = {hash_value: paths for hash_value, paths in hash_dict.items() if len(paths) > 1}
-   drop_dublicate(duplicates)
    # условие на удаление по повторению delite_picture = True
    if delite_picture==False:
       return duplicates
    else:
       drop_dublicate(duplicates)
       return duplicates
-  
 
-
-def hash_image(file_path):
+def hash_image(file_path) -> str:
     """Создает хеш файла изображения."""
     hash_md5 = hashlib.md5()
     with open(file_path, "rb") as f:
@@ -85,3 +81,26 @@ def drop_dublicate(duplicates: dict):
       for j in massik:
          os.remove(j)
       
+
+def get_image_sizes(folder_path) -> dict:
+    sizes = {}
+    # Перебираем файлы в указанной папке
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+                file_path = os.path.join(root, file)
+                # Открываем изображение и получаем его размеры
+                with Image.open(file_path) as img:
+                    sizes[file_path] = img.size  # (ширина, высота)
+
+    return sizes
+
+def repeating_size_counter(xui: dict):
+   value_count = {}
+   for value in xui.values():
+      if value in value_count:
+         value_count[value] += 1
+      else:
+         value_count[value] = 1
+   print(value_count)
+   return value_count

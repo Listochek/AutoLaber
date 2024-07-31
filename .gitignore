@@ -1,5 +1,6 @@
 Crawler/
 picture/
+picture_rollback/
 .vscode
 __pycache__/
 *.pyc
