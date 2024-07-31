@@ -18,7 +18,7 @@ print(check_images(len(KEYS) * kef, direct))
 print(image_weight(direct))
 print(process_images_in_directory(direct))
 print(find_duplicate_images(direct))
-print(get_image_sizes(direct))
+#print(get_image_sizes(direct))
 print(repeating_size_counter(get_image_sizes(direct)))
 
 
