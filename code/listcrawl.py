@@ -49,17 +49,21 @@ class FolderSeparation:
 
     def shuffle_imgs(self, images_dir: str) -> list: # random = True/False
         all_files = os.listdir(images_dir)
+        for i in all_files:
+            all_files[all_files.index(i)] = f'{images_dir}\\{i}'
         random.shuffle(all_files)
         return all_files 
 
     def separation_files(self, all_files: list, folder_sizes: list):
+        
         total_files = len(all_files)
         train_end = int(total_files * folder_sizes[0] / 100)
-        validation_end = int(total_files * folder_sizes[2] / 100)
+        validation_end = int(total_files * folder_sizes[1] / 100) + train_end
 
         train_files = all_files[:train_end]
         validation_files = all_files[train_end:validation_end]
         test_files = all_files[validation_end:]
+        # оставновился на случайном распределении файлов
         return [train_files, validation_files, test_files]
     '''    
     def move_files(files, target_dir):
@@ -73,14 +77,27 @@ class FolderSeparation:
         #FolderManager.remove_dirs(parent_dir, folder_names)
         return FolderManager.add_folders(images_dir, folder_names)
 
-    def ranaming():
-        pass
 
-    def runer(self, parrent_dir:str, images_dir: str, folder_sizes: list = [75, 20, 5], folder_names: list = ['train', 'validation', 'test'], random_names:bool = False): #, random: bool = False, renaming_picture: bool = False
-        self.add_folders(parrent_dir, folder_names)
+    def move_files(self, folders_path: list, files_names: list):
+        for i in range(3): # можно реализовать инумерэйтом
+            for j in files_names[i]:
+                print(j)
+                shutil.move(j, folders_path[i])
+
+    def runer(self, parrent_dir:str, images_dir: str, folder_sizes: list = [75, 20, 5], folder_names: list = ['train', 'validation', 'test']): #, random: bool = False, renaming_picture: bool = False
+        '''parrent_dir - the folder in which all actions will take place 
+        images_dir - folder containing pictures
+        folder_sizes - percentage split into different folders
+        folder_names -  folder names to separate
+
+        '''
+        print(parrent_dir)
+        pis = self.add_folders(parrent_dir, folder_names)
         all_files = self.shuffle_imgs(images_dir)
         al = self.separation_files(all_files, folder_sizes)
-        print(al)
+        self.move_files(pis, al)
+        FolderManager.remove_old_folder(images_dir)
+      
      
 
 class RemoveDuplicate():

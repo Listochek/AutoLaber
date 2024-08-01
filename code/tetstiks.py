@@ -28,7 +28,7 @@ print(mass)
 
 '''
 def bing_list_crawler(key_words: list, Save_path: str, max_pic: int = 1, main_folder_name: str = 'Crawler', synonym: bool = False):
-    FolderManager.remove_old_folder(Save_path)
+    FolderManager.remove_old_folder(Save_path) # перезаписать для разделения через объект с наследованием
     FolderManager.add_folders(Save_path, key_words)
     os.makedirs(f'{Save_path}\\{main_folder_name}')
     for i in key_words:
