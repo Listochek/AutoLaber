@@ -2,18 +2,33 @@
 #from icrawler import BingImageCrawler
 import sys
 import os
-from icrawler.builtin import BingImageCrawler
+from icrawler.builtin import BingImageCrawler, GoogleImageCrawler
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from file_management.folder_manager import FolderManager, FolderSeparation
 
-
-def run_ansambl(key_words: list, path_to_save: str, max_pic: int = 1, folders_for_saving: list = ['train', 'validation', 'test'], crawler: str = 'Crawler'):
+# path_to_save = mane_dirr
+def run_ansambl(key_words: list, path_to_save: str, max_pic: int = 2, folders_for_saving: list = ['train', 'validation', 'test'], crawler: str = 'Crawler'):
     folmg, folsep = FolderManager(), FolderSeparation()
-   # folders_for_saving.append(crawler)
-    folmg.remove_dirs(path_to_save, folders_for_saving)
-    #folmg.remove_old_folder(path_to_save)
-    
+    #сделать так чтоб не ремувалась вся папка файлов а только наши файлы
+    folmg.remove_old_folder(path_to_save)
+    abra = [crawler, *key_words]
+    folmg.add_folders(path_to_save, abra)
+    # реализовать файл с разгными функциями для скачивания которые будут настроенны чтоб не вызывать через цикл
+    # реализвать скачивание через потоки
+    for i in key_words:
+        bing_crawler = BingImageCrawler(storage={'root_dir': f'{path_to_save}/{i}'})
+        bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
+        del bing_crawler
+    #почистить папки после переноса
+    folmg.piture_rename(path_to_save, crawler, folmg.get_all_filenames(path_to_save))
+    # объеденить после создания вместе с folders_for_saving тк ремувается вся dirra
+    ab = folmg.add_folders(path_to_save, folders_for_saving)
+    #slizes = folsep.shuffle_imgs(f'{path_to_save}\\{crawler}') # сюда передовать папку с кравлером где все пикчи
+    #print(slizes)
+    #присоеденить функцию для удаления дубликатов и все это дело
+    sl = folsep.separation_files(folsep.shuffle_imgs(f'{path_to_save}\\{crawler}'))
+    folsep.move_files(ab, sl)
 
 KEYS = ['котики', 'мышки', 'коты']
 run_ansambl(KEYS, 'picture')

@@ -1,10 +1,11 @@
 import os
 import shutil
 import random
+import logging
 
 class FolderManager:
     def __init__(self) -> None:
-        pass
+        logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
     def fm_runer():
         pass
 
@@ -13,28 +14,32 @@ class FolderManager:
         for i in folders_names:
             path = os.path.join(parent_dir, i)
             path_list.append(path)
-            os.makedirs(path, exist_ok=True)
+            print(path_list)
+            os.makedirs(path) # , exist_ok=True
         return path_list
 
     def piture_rename(self, parent_dir: str, main_folder_name: str, folders_names: list) -> None: 
         folders_names.remove(main_folder_name)
-        print(folders_names)
+        #print(folders_names)
         for i in folders_names:
             pathik = f'{parent_dir}/{i}' 
             print(os.listdir(pathik))
             list_iteration = os.listdir(pathik)
             for j in list_iteration:
                 shutil.move(f'{parent_dir}/{i}/{j}', f'{parent_dir}/{main_folder_name}/{i + j}')
-        FolderManager.remove_dirs(parent_dir, folders_names)
+        self.remove_dirs(parent_dir, folders_names)
 
     def get_all_filenames(self, dirr: str) -> list:
-        dir_list = os.listdir(dirr)
-        return dir_list
+        return os.listdir(dirr)
 
     def remove_dirs(self, parent_dir: str, folders_names: list) -> None:
+        
         for i in folders_names:
-            shutil.rmtree(f'{parent_dir}/{i}')
-
+            try:
+                shutil.rmtree(f'{parent_dir}/{i}')
+            except:
+               # logging.warning("A DEBUG Message")
+                pass
     def remove_old_folder(self, parent_dir: str) -> None:
         if os.path.isdir(parent_dir):
             shutil.rmtree(parent_dir)
@@ -52,7 +57,7 @@ class FolderSeparation:
         random.shuffle(all_files)
         return all_files 
 
-    def separation_files(self, all_files: list, folder_sizes: list):
+    def separation_files(self, all_files: list, folder_sizes: list = [75, 20, 5]):
         total_files = len(all_files)
         train_end = int(total_files * folder_sizes[0] / 100)
         validation_end = int(total_files * folder_sizes[1] / 100) + train_end
@@ -63,7 +68,8 @@ class FolderSeparation:
         # оставновился на случайном распределении файлов
         return [train_files, validation_files, test_files]
 
-    def add_folders(self, images_dir: str, folder_names: list) -> list:
+    def sadd_folders(self, images_dir: str, folder_names: list) -> list:
+        '''Просмотреть использование функции нужно удалить'''
         for i in folder_names:
             if os.path.isdir(f'{images_dir}\\{i}'):
                 shutil.rmtree(f'{images_dir}\\{i}')
@@ -86,5 +92,5 @@ class FolderSeparation:
         all_files = self.shuffle_imgs(images_dir)
         al = self.separation_files(all_files, folder_sizes)
         self.move_files(pis, al)
-        FolderManager.remove_old_folder(images_dir)
+       # FolderManager.remove_old_folder(images_dir)
       
