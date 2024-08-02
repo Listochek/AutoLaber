@@ -3,7 +3,7 @@ import os
 
 # Добавляем корневую директорию в sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from code.listcrawl import bing_list_crawler
+from ztest_folder.listcrawl import bing_list_crawler
 
 
 from main_test import check_images, image_weight, process_images_in_directory, find_duplicate_images, get_image_sizes, repeating_size_counter
