@@ -68,13 +68,6 @@ class FolderSeparation:
         # оставновился на случайном распределении файлов
         return [train_files, validation_files, test_files]
 
-    def sadd_folders(self, images_dir: str, folder_names: list) -> list:
-        '''Просмотреть использование функции нужно удалить'''
-        for i in folder_names:
-            if os.path.isdir(f'{images_dir}\\{i}'):
-                shutil.rmtree(f'{images_dir}\\{i}')
-        return FolderManager.add_folders(images_dir, folder_names)
-
     def move_files(self, folders_path: list, files_names: list):
         for i in range(3): # можно реализовать инумерэйтом
             for j in files_names[i]:
@@ -82,11 +75,13 @@ class FolderSeparation:
                 shutil.move(j, folders_path[i])
 
     def runer(self, parrent_dir:str, images_dir: str, folder_sizes: list = [75, 20, 5], folder_names: list = ['train', 'validation', 'test']): #, random: bool = False, renaming_picture: bool = False
-        '''parrent_dir - the folder in which all actions will take place 
+        '''
+        Подумать над тем на сколько нужен ранер
+        parrent_dir - the folder in which all actions will take place 
         images_dir - folder containing pictures
         folder_sizes - percentage split into different folders
         folder_names -  folder names to separate
-
+        
         '''
         pis = self.add_folders(parrent_dir, folder_names)
         all_files = self.shuffle_imgs(images_dir)
