@@ -5,8 +5,6 @@ import logging
 
 class FolderManager:
     def __init__(self) -> None:
-        logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
-    def fm_runer():
         pass
 
     def add_folders(self, parent_dir: str, folders_names: list) -> list:
@@ -14,16 +12,14 @@ class FolderManager:
         for i in folders_names:
             path = os.path.join(parent_dir, i)
             path_list.append(path)
-            print(path_list)
             os.makedirs(path) # , exist_ok=True
+        logging.info(f'add folders: { {*path_list} }')
         return path_list
 
     def piture_rename(self, parent_dir: str, main_folder_name: str, folders_names: list) -> None: 
         folders_names.remove(main_folder_name)
-        #print(folders_names)
         for i in folders_names:
             pathik = f'{parent_dir}/{i}' 
-            print(os.listdir(pathik))
             list_iteration = os.listdir(pathik)
             for j in list_iteration:
                 shutil.move(f'{parent_dir}/{i}/{j}', f'{parent_dir}/{main_folder_name}/{i + j}')
@@ -33,12 +29,11 @@ class FolderManager:
         return os.listdir(dirr)
 
     def remove_dirs(self, parent_dir: str, folders_names: list) -> None:
-        
         for i in folders_names:
             try:
                 shutil.rmtree(f'{parent_dir}/{i}')
             except:
-               # logging.warning("A DEBUG Message")
+                logging.error(f"remove_dirs don't find {parent_dir}/{i}" )
                 pass
     def remove_old_folder(self, parent_dir: str) -> None:
         if os.path.isdir(parent_dir):
@@ -71,7 +66,6 @@ class FolderSeparation:
     def move_files(self, folders_path: list, files_names: list):
         for i in range(3): # можно реализовать инумерэйтом
             for j in files_names[i]:
-                print(j)
                 shutil.move(j, folders_path[i])
 
     def runer(self, parrent_dir:str, images_dir: str, folder_sizes: list = [75, 20, 5], folder_names: list = ['train', 'validation', 'test']): #, random: bool = False, renaming_picture: bool = False

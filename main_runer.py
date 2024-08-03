@@ -3,20 +3,23 @@
 import sys
 import os
 from icrawler.builtin import BingImageCrawler, GoogleImageCrawler
+import logging
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from file_management.folder_manager import FolderManager, FolderSeparation
+from file_management.folder_manager import FolderManager, FolderSeparation #RemoveDuplicates
+from file_management.remove_duplicates import RemoveDuplicates
 from parsing.parse import PictureCrawler
 #PictureCrawler
 # path_to_save = main_dirr
-def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train', 'validation', 'test'], crawler: str = 'Crawler'):
+def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train', 'validation', 'test'], crawl_mode='Google', crawler: str = 'Crawler'):
     '''key_words - лист по которому будет производиться поиск
    main_dir - Дирректория в которой будут создоваться папки с результатами
    folders_for_saving - папки в которые будет распихан датасет предполагается что папок будет только три
    crawler - наименование временной папки которая будет удалена
     '''
+    logging.basicConfig(level=logging.INFO, filename="py_log.log" ,filemode="w", format="%(asctime)s %(levelname)s %(message)s")
     folmg, folsep = FolderManager(), FolderSeparation()
-    pc = PictureCrawler()
+    pc, rmd = PictureCrawler(), RemoveDuplicates()
 
     #сделать так чтоб не ремувалась вся папка файлов а только наши файлы
     folmg.remove_old_folder(main_dirr)
@@ -25,8 +28,10 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     # реализовать файл с разгными функциями для скачивания которые будут настроенны чтоб не вызывать через цикл
     # реализвать скачивание через потоки
     # реализвовать класс содержащий парсеры
-    pc.run_pars(key_words, main_dirr, max_pic=5)
+    pc.run_pars(key_words, main_dirr, max_pic=max_pic, crawl_mode=crawl_mode) #crawl_mode = Google/Bing
+    
     folmg.piture_rename(main_dirr, crawler, folmg.get_all_filenames(main_dirr))
+    rmd.find_duplicate_images(folder_path=f'{main_dirr}\\{crawler}', delite_picture=True)
     # объеденить после создания вместе с folders_for_saving тк ремувается вся dirra
     ab = folmg.add_folders(main_dirr, folders_for_saving)
     #присоеденить функцию для удаления дубликатов и все это дело
@@ -34,18 +39,10 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     folsep.move_files(ab, sl)
     folmg.remove_dirs(main_dirr, [crawler])
 
-''' for i in key_words:
-        g = GoogleImageCrawler()
-        g.__init__(storage={'root_dir': f'{main_dirr}/{i}'})
-        g.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
-        #bing_crawler = BingImageCrawler(storage={'root_dir': f'{main_dirr}/{i}'})
-        #bing_crawler.crawl(keyword=i, max_num=max_pic, file_idx_offset=0)
-        #del bing_crawler
-        del g'''
-
+# https://ru.stackoverflow.com/questions/897278/%D0%94%D0%B5%D0%BA%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B9-%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4%D0%B8%D1%82-%D0%B2%D1%80%D0%B5%D0%BC%D1%8F-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8
     #почистить папки после переноса
   
 KEYS = ['котики', 'мышки', 'коты']
-run_ansambl(KEYS, 'picture')
+run_ansambl(KEYS, 'picture', max_pic=45)
 
 

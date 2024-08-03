@@ -1,6 +1,7 @@
 import hashlib
 from collections import defaultdict
 import os
+import logging
 
 class RemoveDuplicates():
     def __init__(self) -> None:
@@ -21,6 +22,7 @@ class RemoveDuplicates():
 
             # Возвращаем только повторяющиеся изображения
         duplicates = {hash_value: paths for hash_value, paths in hash_dict.items() if len(paths) > 1}
+        logging.info(f'duplicates files: {duplicates}')
         # условие на удаление по повторению delite_picture = True
         if delite_picture==False:
             return duplicates
@@ -43,3 +45,4 @@ class RemoveDuplicates():
             massik.pop(0)
             for j in massik:
                 os.remove(j)   
+        logging.info(f'duplicates drop: {keys_to_del}')
