@@ -9,6 +9,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from file_management.folder_manager import FolderManager, FolderSeparation #RemoveDuplicates
 from file_management.remove_duplicates import RemoveDuplicates
 from parsing.parse import PictureCrawler
+from tests.run_tests import runing_test
+from tests.test_set_log import add_logs
+
 #PictureCrawler
 # path_to_save = main_dirr
 def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train', 'validation', 'test'], crawl_mode='Google', crawler: str = 'Crawler'):
@@ -39,10 +42,14 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     folsep.move_files(ab, sl)
     folmg.remove_dirs(main_dirr, [crawler])
 
-# https://ru.stackoverflow.com/questions/897278/%D0%94%D0%B5%D0%BA%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B9-%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4%D0%B8%D1%82-%D0%B2%D1%80%D0%B5%D0%BC%D1%8F-%D0%B2%D1%8B%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8
-    #почистить папки после переноса
-  
-KEYS = ['котики', 'мышки', 'коты']
-run_ansambl(KEYS, 'picture', max_pic=15)
 
+KEYS = ['котики', 'мышки', 'люди', 'зонтики']
+PICTURE_COUNT = 55
+run_ansambl(KEYS, 'picture', max_pic=PICTURE_COUNT)
+runing_test(KEYS, 'picture', max_pic=PICTURE_COUNT)
 
+'''KEYS = ['котики', 'мышки', 'люди', 'зонтики']
+for i in range(50, 80, 5):
+    print(f'iteration now: {i}')
+    run_ansambl(KEYS, 'picture', max_pic=i)
+    runing_test(KEYS, 'picture', max_pic=i)'''
