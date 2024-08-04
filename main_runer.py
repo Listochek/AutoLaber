@@ -43,6 +43,6 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     #почистить папки после переноса
   
 KEYS = ['котики', 'мышки', 'коты']
-run_ansambl(KEYS, 'picture', max_pic=45)
+run_ansambl(KEYS, 'picture', max_pic=15)
 
 

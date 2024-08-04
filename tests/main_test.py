@@ -7,17 +7,18 @@ import hashlib
 from collections import defaultdict
 import shutil
 
-def check_images(number_of_pictures: int, parrent_dir: str, folder_name: str = 'Crawler') -> list:
+def check_images(pic_list: list, key_words: list, max_pic: int) -> list:
    '''Test to count how many images were downloaded'''
-   pic_cou = len(os.listdir(f'{parrent_dir}/{folder_name}'))
-   return [pic_cou, pic_cou/number_of_pictures * 100]
+   pic_cou = len(key_words * max_pic)
+   # возврат в процентом соотношении
+   return [len(pic_list), f'{pic_cou/len(pic_list) * 100}%']
 
-def image_weight(parrent_dir: str, folder_name: str = 'Crawler') -> list: 
-   parse_list = os.listdir((f'{parrent_dir}/{folder_name}'))
+def image_weight(pic_list: list) -> dict: 
    image_weight_list = []
-   for i in parse_list:
-      image_weight_list.append(round(os.path.getsize(f'{parrent_dir}/{folder_name}/{i}') / 1024, 1))
-   return [max(image_weight_list), min(image_weight_list), median(image_weight_list)]
+   for i in pic_list:
+      image_weight_list.append(round(os.path.getsize(i) / 1024, 1))
+      #[max(image_weight_list), min(image_weight_list), median(image_weight_list)]
+   return {'max, KB': max(image_weight_list), 'min, KB': min(image_weight_list), 'median, KB': median(image_weight_list)}
 
 def check_image_openable(file_path):
     try:
@@ -27,10 +28,10 @@ def check_image_openable(file_path):
     except (IOError, SyntaxError) as e:
         return file_path, False
 
-def process_images_in_directory(parrent_dir: str, folder_name: str = 'Crawler') -> True:
+def broken_pictures(image_files: list) -> False:
    '''If function returns a list, in the folder has broken file'''
-   folder_path = f'{parrent_dir}/{folder_name}'
-   image_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+   #folder_path = f'{parrent_dir}/{folder_name}'
+   #image_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
    with ThreadPoolExecutor(max_workers=10) as executor:  # Установите количество потоков по желанию
       results = executor.map(check_image_openable, image_files)
    Fail_list = []
@@ -39,7 +40,7 @@ def process_images_in_directory(parrent_dir: str, folder_name: str = 'Crawler') 
          continue
       else:
          Fail_list.append(file_path)
-   return Fail_list if len(Fail_list) != 0 else True
+   return Fail_list if len(Fail_list) != 0 else False
 
 
 

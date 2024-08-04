@@ -27,7 +27,16 @@ class FolderManager:
 
     def get_all_filenames(self, dirr: str) -> list:
         return os.listdir(dirr)
-
+    # посмотреть на 
+    def get_filenames_in_dirrectores(self, dirr: str, folders: list):
+        paths = []
+        for i in folders:
+            the = os.listdir(f'{dirr}\\{i}')
+            for j in the:
+                paths.append(f'{dirr}\\{i}\\{j}')
+        return paths
+        
+    
     def remove_dirs(self, parent_dir: str, folders_names: list) -> None:
         for i in folders_names:
             try:
