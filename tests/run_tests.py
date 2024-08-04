@@ -4,9 +4,9 @@ import os
 # Добавляем корневую директорию в sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 #from ztest_folder.listcrawl import bing_list_crawler
-from test_set_log import add_logs
+from tests.test_set_log import add_logs
 
-from main_test import check_images, image_weight, broken_pictures, find_duplicate_images, get_image_sizes, repeating_size_counter
+from tests.main_test import check_images, image_weight, broken_pictures, find_duplicate_images, get_image_sizes, repeating_size_counter
 from file_management.folder_manager import FolderManager
 
 KEYS = ['котики', 'мышки', 'коты']
@@ -17,6 +17,7 @@ kef = 5
 
 def runing_test(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train', 'validation', 'test']):
     # -- logs -- #
+    from tests.test_set_log import add_logs
     logger = add_logs()
 
     # 1. Определяем новый уровень логирования
@@ -28,7 +29,7 @@ def runing_test(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     logger.test(f'image_weight: {image_weight(path_to_images)}')
     logger.test(f'broken images: {broken_pictures(path_to_images)}')
 
-runing_test(KEYS, 'picture', 15)
+#runing_test(KEYS, 'picture', 15)
 #print(check_images(len(KEYS) * kef, direct)) #переписать функцию через лен массива тк все пути в одном списке path_to_images
 #print(image_weight(direct)) # переписать логику через уже готовые пути
 #print(v) # проверка на то сломано ли изображение

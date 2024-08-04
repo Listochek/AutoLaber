@@ -9,9 +9,9 @@ import shutil
 
 def check_images(pic_list: list, key_words: list, max_pic: int) -> list:
    '''Test to count how many images were downloaded'''
-   pic_cou = len(key_words * max_pic)
+   pic_cou = len(key_words) * max_pic
    # возврат в процентом соотношении
-   return [len(pic_list), f'{pic_cou/len(pic_list) * 100}%']
+   return [len(pic_list), f'{len(pic_list)/pic_cou * 100}%']
 
 def image_weight(pic_list: list) -> dict: 
    image_weight_list = []
