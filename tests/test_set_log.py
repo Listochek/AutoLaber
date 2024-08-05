@@ -10,7 +10,7 @@ def add_logs():
             self._log(MY_CUSTOM_LEVEL, message, args, **kwargs)
     # 2. Определяем функцию для использования нового уровня
 
-    logging.basicConfig(level=logging.INFO, filename="py_log.log" ,filemode="a", format="%(asctime)s %(levelname)s %(message)s")
+    logging.basicConfig(level=logging.INFO, filename="logs\\test_log.log" ,filemode="a", format="%(asctime)s %(levelname)s %(message)s")
 
     # Добавляем новый метод в класс Logger
     logging.Logger.test = test
