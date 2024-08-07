@@ -56,12 +56,18 @@ class YoloAutoPrediction:
                     print(f"Ошибка при создании директории {folder_path}: {e}")
 
     def add_path_txt(self, path_to_pic: list, pic_folders_name: str = 'images') -> list:
+        # Поддерживаемые форматы изображений
+        image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp']
         path_txt = []
-        for i in path_to_pic:    
+
+        for i in path_to_pic:
+            # Заменяем 'images' на 'labels'
             a = i.replace(pic_folders_name, 'labels')
-            path_txt.append(a.replace('.jpg', '.txt'))  
-            path_txt.append(a.replace('.png', '.txt'))
-            path_txt.append(a.replace('.jpeg', '.txt'))
+            # Создаем новый путь с заменой расширения на .txt
+            for ext in image_extensions:
+                if i.endswith(ext):
+                    path_txt.append(a.replace(ext, '.txt'))
+
         return path_txt
 
     def search_pair(self, path_to_txt_1: list, path_to_txt_2:list) -> list:
