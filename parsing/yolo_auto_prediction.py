@@ -8,7 +8,7 @@ class YoloAutoPrediction:
     
     main_logics: YoloPredicts -> ([bbox], [cls]), fun(bbox -> yolo_bbox) -> {cls: [bbox]} -> label
     '''
-    def __init__(self, main_dirr: str,  model: str = 'models\\yolov8n', folders_names = ['train', 'validation', 'test'], pic_folders_name='images'):
+    def __init__(self, main_dirr: str,  model: str = 'models\\yolov8n', folders_names: list = ['train', 'validation', 'test'], pic_folders_name='images'):
         self.folders_names = folders_names
         self.main_dirr = main_dirr
         self.model = YOLO(model=model)
@@ -24,6 +24,8 @@ class YoloAutoPrediction:
         r = self.add_path_txt(path_to_pic=paths)
         al = self.search_pair(kon, r)
         self.move_txt(al)
+    
+        shutil.rmtree(f'runs')
 
     def prediction(self, path_to_pic: list, model, conf: float = 0.5, imgsz: int = 320):
         model.predict(path_to_pic, imgsz=imgsz, conf=conf, save_txt=True)
@@ -48,7 +50,6 @@ class YoloAutoPrediction:
                 folder_path = os.path.join(main_dirr, folder, fold_name)
                 try:
                     os.makedirs(folder_path, exist_ok=True)  # Создает директорию и не вызывает ошибку, если она уже существует
-                    print(f"Создана директория: {folder_path}")
                 except Exception as e:
                     print(f"Ошибка при создании директории {folder_path}: {e}")
 
@@ -78,8 +79,3 @@ class YoloAutoPrediction:
                 shutil.move(i[0], i[1])
             except Exception as e:
                 print(f"Ошибка при перемещении файла {i[0]} в {i[1]}: {e}")
-#a = search_pair()
-#print(a)
-# Пример использования
-'''yp = YoloAutoPrediction(main_dir='picture')
-yp.run_models()'''

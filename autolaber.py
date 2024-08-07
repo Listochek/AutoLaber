@@ -22,7 +22,7 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     crawler: str = 'Crawler'
     logging.basicConfig(level=logging.INFO, filename="logs\\py_log.log" ,filemode="w", format="%(asctime)s %(levelname)s %(message)s")
     folmg, folsep, pc = FolderManager(), FolderSeparation(), PictureCrawler()
-    yp = YoloAutoPrediction(main_dirr=main_dirr)
+    #yp = YoloAutoPrediction(main_dirr=main_dirr)
 
     #сделать так чтоб не ремувалась вся папка файлов а только наши файлы
 
@@ -42,5 +42,8 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     sl = folsep.separation_files(folsep.shuffle_imgs(f'{main_dirr}\\{crawler}'))
     folsep.move_files(ab, sl)
     folmg.remove_dirs(main_dirr, [crawler])
-    yp.run_models()
+    #yp.run_models()
 
+def run_yolo_prediction(main_dirr: str,  model: str = 'models\\yolov8n', folders_names: list = ['train', 'validation', 'test'], pic_folders_name: str='images'):
+    yp = YoloAutoPrediction(main_dirr=main_dirr, model=model, folders_names=folders_names, pic_folders_name=pic_folders_name)
+    yp.run_models()

@@ -13,7 +13,7 @@ import logging
 #bing_list_crawler(KEYS, direct, kef)
 
 
-def runing_test(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train', 'validation', 'test']):
+def runing_test(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train\\images', 'validation\\images', 'test\\images']):
     # -- logs -- #
     logging.basicConfig(level=logging.INFO, filename="logs\\test_log.log" ,filemode="w", format="%(asctime)s %(levelname)s %(message)s")
 
