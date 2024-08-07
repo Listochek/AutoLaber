@@ -3,7 +3,8 @@
 import sys
 import os
 import logging
-
+import sys
+sys.path.append("C:/путь_к_вашей_папке")
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from file_management.folder_manager import FolderManager, FolderSeparation
 from file_management.remove_duplicates import RemoveDuplicates
@@ -33,7 +34,7 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
     # +-реализвать скачивание через потоки
     pc.run_pars(key_words, main_dirr, max_pic=max_pic, crawl_mode=crawl_mode) #crawl_mode = Google/Bing
     
-    folmg.piture_rename(main_dirr, crawler, folmg.get_all_filenames(main_dirr))
+    folmg.picture_rename(main_dirr, crawler, folmg.get_all_filenames(main_dirr))
     if remove_duplicates:
         rmd = RemoveDuplicates()
         rmd.find_duplicate_images(folder_path=f'{main_dirr}\\{crawler}', delite_picture=True)

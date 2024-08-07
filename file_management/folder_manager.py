@@ -2,7 +2,7 @@ import os
 import shutil
 import random
 import logging
-
+from PIL import Image
 class FolderManager:
     def __init__(self) -> None:
         pass
@@ -16,7 +16,8 @@ class FolderManager:
         logging.info(f'add folders: { {*path_list} }')
         return path_list
 
-    def piture_rename(self, parent_dir: str, main_folder_name: str, folders_names: list) -> None: 
+
+    def picture_rename(self, parent_dir: str, main_folder_name: str, folders_names: list) -> None: 
         folders_names.remove(main_folder_name)
         for i in folders_names:
             pathik = f'{parent_dir}/{i}' 
@@ -24,6 +25,7 @@ class FolderManager:
             for j in list_iteration:
                 shutil.move(f'{parent_dir}/{i}/{j}', f'{parent_dir}/{main_folder_name}/{i + j}')
         self.remove_dirs(parent_dir, folders_names)
+
 
     def get_all_filenames(self, dirr: str) -> list:
         return os.listdir(dirr)

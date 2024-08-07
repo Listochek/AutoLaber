@@ -47,7 +47,9 @@ class YoloAutoPrediction:
             # Создание необходимых папок
             for folder in folders_names:
                 # Путь к директории
-                folder_path = os.path.join(main_dirr, folder, fold_name)
+                folder_path = f'{main_dirr}\\{folder}\\{fold_name}'
+                os.mkdir(folder_path)
+                #folder_path = os.path.join(main_dirr, folder, fold_name)
                 try:
                     os.makedirs(folder_path, exist_ok=True)  # Создает директорию и не вызывает ошибку, если она уже существует
                 except Exception as e:
@@ -57,7 +59,9 @@ class YoloAutoPrediction:
         path_txt = []
         for i in path_to_pic:    
             a = i.replace(pic_folders_name, 'labels')
-            path_txt.append(a.replace('.jpg', '.txt'))
+            path_txt.append(a.replace('.jpg', '.txt'))  
+            path_txt.append(a.replace('.png', '.txt'))
+            path_txt.append(a.replace('.jpeg', '.txt'))
         return path_txt
 
     def search_pair(self, path_to_txt_1: list, path_to_txt_2:list) -> list:
