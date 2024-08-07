@@ -25,12 +25,6 @@ run_ansambl(
 main_dirr='picture' # используется таже дирректория что и для парсинга
 model = 'models\\yolov8n' # для примера используем yolov8n, можите подключить свою модель
 # Бибилиотека заточена на работу с модели YOLO 8+ серии
-#folders_names = ['train', 'validation', 'test'], # если вы не меняли folders_for_saving то менять ничего не нужно
 pic_folders_name = 'images' # pic_folders_name должен стоятб такой же как в конце путей folders_for_saving=[train\\images...]
-folders_names = ['train', 'validation', 'test']
+folders_names = ['train', 'validation', 'test']# если вы не меняли folders_for_saving то менять ничего не нужно
 run_yolo_prediction(main_dirr=main_dirr, model=model, pic_folders_name=pic_folders_name, folders_names=folders_names)
-'''run_ansambl(KEYS, 'picture', max_pic=PICTURE_COUNT)
-run_yolo_prediction(main_dirr='picture')
-runing_test(KEYS, 'picture', max_pic=PICTURE_COUNT)
-'''
-    
