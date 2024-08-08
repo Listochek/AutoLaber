@@ -6,7 +6,6 @@ from PIL import Image
 import hashlib
 from collections import defaultdict
 
-
 def check_images(pic_list: list, key_words: list, max_pic: int) -> list:
    '''Test to count how many images were downloaded'''
    pic_cou = len(key_words) * max_pic
