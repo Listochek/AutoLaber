@@ -1,7 +1,5 @@
 Crawler/
 picture/
-ztest_folder/
-picture_rollback/
 .vscode
 __pycache__/
 *.pyc
