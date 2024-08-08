@@ -5,7 +5,7 @@ from statistics import median
 from PIL import Image
 import hashlib
 from collections import defaultdict
-import shutil
+
 
 def check_images(pic_list: list, key_words: list, max_pic: int) -> list:
    '''Test to count how many images were downloaded'''
