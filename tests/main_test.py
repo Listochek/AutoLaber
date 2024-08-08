@@ -1,4 +1,4 @@
-''' Тесты для проверки сколько изображений скачалось'''
+''' Различные тесты над скаченными изображениями'''
 import os
 from concurrent.futures import ThreadPoolExecutor
 from statistics import median
@@ -9,14 +9,12 @@ from collections import defaultdict
 def check_images(pic_list: list, key_words: list, max_pic: int) -> list:
    '''Test to count how many images were downloaded'''
    pic_cou = len(key_words) * max_pic
-   # возврат в процентом соотношении
    return [len(pic_list), f'{len(pic_list)/pic_cou * 100}%']
 
 def image_weight(pic_list: list) -> dict: 
    image_weight_list = []
    for i in pic_list:
       image_weight_list.append(round(os.path.getsize(i) / 1024, 1))
-      #[max(image_weight_list), min(image_weight_list), median(image_weight_list)]
    return {'max, KB': max(image_weight_list), 'min, KB': min(image_weight_list), 'median, KB': median(image_weight_list)}
 
 def check_image_openable(file_path):
@@ -29,9 +27,7 @@ def check_image_openable(file_path):
 
 def broken_pictures(image_files: list) -> False:
    '''If function returns a list, in the folder has broken file'''
-   #folder_path = f'{parrent_dir}/{folder_name}'
-   #image_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
-   with ThreadPoolExecutor(max_workers=10) as executor:  # Установите количество потоков по желанию
+   with ThreadPoolExecutor(max_workers=10) as executor: 
       results = executor.map(check_image_openable, image_files)
    Fail_list = []
    for file_path, result in results:
@@ -44,9 +40,7 @@ def broken_pictures(image_files: list) -> False:
 
 
 def find_duplicate_images(folder_path: str, delite_picture : bool = False):
-   # Словарь для хранения хешей изображений
    hash_dict = defaultdict(list)
-   # Перебираем файлы в папке
    for root, dirs, files in os.walk(folder_path):
       for file in files:
             # Проверяем, является ли файл изображением (можно добавлять другие форматы)

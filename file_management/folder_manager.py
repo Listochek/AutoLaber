@@ -12,7 +12,7 @@ class FolderManager:
         for i in folders_names:
             path = os.path.join(parent_dir, i)
             path_list.append(path)
-            os.makedirs(path) # , exist_ok=True
+            os.makedirs(path)
         logging.info(f'add folders: { {*path_list} }')
         return path_list
 
@@ -29,7 +29,6 @@ class FolderManager:
 
     def get_all_filenames(self, dirr: str) -> list:
         return os.listdir(dirr)
-    # посмотреть на 
     def get_filenames_in_dirrectores(self, dirr: str, folders: list):
         paths = []
         for i in folders:
@@ -52,11 +51,10 @@ class FolderManager:
 
 
 class FolderSeparation:
-    #add_folders -> *ranaming ->separatio
     def __init__(self) -> None:
         pass
 
-    def shuffle_imgs(self, images_dir: str) -> list: # random = True/False
+    def shuffle_imgs(self, images_dir: str) -> list:
         all_files = os.listdir(images_dir)
         for i in all_files:
             all_files[all_files.index(i)] = f'{images_dir}\\{i}'
@@ -71,26 +69,10 @@ class FolderSeparation:
         train_files = all_files[:train_end]
         validation_files = all_files[train_end:validation_end]
         test_files = all_files[validation_end:]
-        # оставновился на случайном распределении файлов
         return [train_files, validation_files, test_files]
 
     def move_files(self, folders_path: list, files_names: list):
-        for i in range(3): # можно реализовать инумерэйтом
+        for i in range(3): 
             for j in files_names[i]:
                 shutil.move(j, folders_path[i])
 
-    def runer(self, parrent_dir:str, images_dir: str, folder_sizes: list = [75, 20, 5], folder_names: list = ['train', 'validation', 'test']): #, random: bool = False, renaming_picture: bool = False
-        '''
-        Подумать над тем на сколько нужен ранер
-        parrent_dir - the folder in which all actions will take place 
-        images_dir - folder containing pictures
-        folder_sizes - percentage split into different folders
-        folder_names -  folder names to separate
-        
-        '''
-        pis = self.add_folders(parrent_dir, folder_names)
-        all_files = self.shuffle_imgs(images_dir)
-        al = self.separation_files(all_files, folder_sizes)
-        self.move_files(pis, al)
-       # FolderManager.remove_old_folder(images_dir)
-      

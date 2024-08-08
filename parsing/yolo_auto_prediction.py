@@ -2,12 +2,6 @@ from ultralytics import YOLO
 import os
 import shutil
 class YoloAutoPrediction:
-    '''в initе принимает модель, словарь классов
-    main_dir в которой будет папки [train, validation, test] в каждой папке будет images/labels
-    
-    
-    main_logics: YoloPredicts -> ([bbox], [cls]), fun(bbox -> yolo_bbox) -> {cls: [bbox]} -> label
-    '''
     def __init__(self, main_dirr: str,  model: str = 'models\\yolov8n', folders_names: list = ['train', 'validation', 'test'], pic_folders_name='images'):
         self.folders_names = folders_names
         self.main_dirr = main_dirr
@@ -42,14 +36,13 @@ class YoloAutoPrediction:
     def get_text_paths(self, path_to_txt: str) -> list:
         # Получаем полные пути к файлам в указанной директории
          return [os.path.join(path_to_txt, filename) for filename in os.listdir(path_to_txt)]
-    #model.predict(source, imgsz=320, conf=0.5, save_txt=True)
+
     def add_folders(self, main_dirr: str, folders_names: list = ['train', 'validation', 'test'], fold_name: str = 'labels') -> None:
             # Создание необходимых папок
             for folder in folders_names:
                 # Путь к директории
                 folder_path = f'{main_dirr}\\{folder}\\{fold_name}'
                 os.mkdir(folder_path)
-                #folder_path = os.path.join(main_dirr, folder, fold_name)
                 try:
                     os.makedirs(folder_path, exist_ok=True)  # Создает директорию и не вызывает ошибку, если она уже существует
                 except Exception as e:
@@ -59,7 +52,6 @@ class YoloAutoPrediction:
         # Поддерживаемые форматы изображений
         image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp']
         path_txt = []
-
         for i in path_to_pic:
             # Заменяем 'images' на 'labels'
             a = i.replace(pic_folders_name, 'labels')
@@ -67,14 +59,12 @@ class YoloAutoPrediction:
             for ext in image_extensions:
                 if i.endswith(ext):
                     path_txt.append(a.replace(ext, '.txt'))
-
         return path_txt
 
     def search_pair(self, path_to_txt_1: list, path_to_txt_2:list) -> list:
         pair_lst = []
         for i in path_to_txt_1:
             path_1 = i.split('\\')
-        
             for j in path_to_txt_2:
                 if path_1[-1] in j:
                     pair_lst.append((i, j))
