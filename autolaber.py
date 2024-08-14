@@ -12,7 +12,7 @@ from tests.run_tests import runing_test
 from tests.test_set_log import add_logs
 from parsing.yolo_auto_prediction import YoloAutoPrediction
 
-def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train\\images', 'validation\\images', 'test\\images'], crawl_mode='Google',remove_duplicates: bool = True):
+def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = ['train\\images', 'validation\\images', 'test\\images'], crawl_mode='Google',remove_duplicates: bool = True) -> None:
     '''key_words - лист по которому будет производиться поиск
    main_dir - Дирректория в которой будут создоваться папки с результатами
    folders_for_saving - папки в которые будет распихан датасет предполагается что папок будет только три
@@ -39,3 +39,14 @@ def run_ansambl(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_s
 def run_yolo_prediction(main_dirr: str,  model: str = 'models\\yolov8n', folders_names: list = ['train', 'validation', 'test'], pic_folders_name: str='images'):
     yp = YoloAutoPrediction(main_dirr=main_dirr, model=model, folders_names=folders_names, pic_folders_name=pic_folders_name)
     yp.run_models()
+
+def dow_pic_to_fol(key_words: list, main_dirr: str, max_pic: int = 2, folders_for_saving: list = 'Crawler', crawl_mode='Google'):
+    logging.basicConfig(level=logging.INFO, filename="logs\\py_log.log" ,filemode="w", format="%(asctime)s %(levelname)s %(message)s")
+    folmg, folsep, pc = FolderManager(), FolderSeparation(), PictureCrawler()
+    folmg.remove_old_folder(main_dirr)
+    abra = [folders_for_saving, *key_words]
+    folmg.add_folders(main_dirr, abra)
+    pc.run_pars(key_words, main_dirr, max_pic=max_pic, crawl_mode=crawl_mode) #crawl_mode = Google/Bing
+    folmg.picture_rename(main_dirr, folders_for_saving, folmg.get_all_filenames(main_dirr))
+
+
